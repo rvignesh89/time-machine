@@ -1,0 +1,19 @@
+{
+  "name": "time-machine",
+  "version": "1.0.0",
+  "description": "api to library db",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm test",
+    "start": "node server.js"
+  },
+  "keywords": [
+    "api",
+    "nodejs"
+  ],
+  "author": "rvignesh",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.13.3"
+  }
+}
