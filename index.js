@@ -3,7 +3,7 @@ var bodyParser = require('body-parser');
 var mongoClient = require('mongodb').MongoClient;
 var assert = require('assert');
 var ObjectId = require('mongodb').ObjectID;
-var url = 'mongodb://localhost:27017/library';
+var url = process.env.MONGOLAB_URI
 
 var app = express();
 app.use(bodyParser.json());
