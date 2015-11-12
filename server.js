@@ -3,7 +3,7 @@ var bodyParser = require('body-parser');
 var mongoClient = require('mongodb').MongoClient;
 var assert = require('assert');
 var ObjectId = require('mongodb').ObjectID;
-var url = process.env.MONGOLAB_URI
+var url = process.env.MONGOLAB_URI || 'mongodb://localhost/library'
 
 var app = express();
 app.use(bodyParser.json());
@@ -19,6 +19,16 @@ app.get('/', function(req,res){
 app.get('/book/:name',function(req,res){
   mongoClient.connect(url, function(err, db) {
     assert.equal(null, err);
+    db.collection('books').find({'name':req.params.name}).toArray(function(err,docs){
+      assert.equal(err,null);
+      res.send({data:docs});
+    });
+  });
+});
+
+app.get('/book',function(req,res){
+  mongoClient.connect(url, function(err, db) {
+    assert.equal(null, err);
     db.collection('books').find().toArray(function(err,docs){
       assert.equal(err,null);
       res.send({data:docs});
@@ -30,6 +40,21 @@ app.post('/book',function(req,res){
   mongoClient.connect(url,function(err,db){
     assert.equal(null,err);
     db.collection('books').insertOne(req.body,
+    function(err,result){
+      assert.equal(null,err);
+      res.send(result);
+    });
+  });
+});
+
+app.put('/book/:name',function(req,res){
+  mongoClient.connect(url,function(err,db){
+    assert.equal(null,err);
+    db.collection('books').updateOne(
+      {'name':req.params.name},
+      {
+        $set:req.body
+      },
     function(err,result){
       assert.equal(null,err);
       res.send(result);
